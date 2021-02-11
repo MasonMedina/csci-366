@@ -43,8 +43,8 @@ Expected equality of these values:
   "0b11111111111111111111111111111111"
   print_binary_representation((4294967295U), buffer)
     Which is: "0b"
-[  FAILED  ] print_binary_representation.works (1 ms)
-[----------] 1 test from print_binary_representation (1 ms total)
+[  FAILED  ] print_binary_representation.works (0 ms)
+[----------] 1 test from print_binary_representation (0 ms total)
 
 [----------] 1 test from set_my_age
 [ RUN      ] set_my_age.works
@@ -52,7 +52,7 @@ Expected equality of these values:
 Expected equality of these values:
   44
   get_my_age()
-    Which is: -1931595272
+    Which is: -240082440
 [  FAILED  ] set_my_age.works (0 ms)
 [----------] 1 test from set_my_age (0 ms total)
 
