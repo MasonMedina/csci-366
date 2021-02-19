@@ -52,7 +52,7 @@ Expected equality of these values:
 Expected equality of these values:
   44
   get_my_age()
-    Which is: 43934200
+    Which is: 1910956536
 [  FAILED  ] set_my_age.works (0 ms)
 [----------] 1 test from set_my_age (0 ms total)
 
