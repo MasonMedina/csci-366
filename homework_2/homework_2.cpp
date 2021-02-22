@@ -54,7 +54,7 @@ struct Person {
     int age;
 };
 
-void set_my_age(struct Person p) {
+void set_my_age(struct Person *p) {
     p -> age = 44; //changed p.age to p -> age so p is a pointer to age
 }
 
