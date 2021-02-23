@@ -1,10 +1,16 @@
-Scanning dependencies of target gtest
-[ 10%] Building CXX object lib/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
-[ 20%] Linking CXX static library ../libgtest.a
-[ 20%] Built target gtest
-Scanning dependencies of target gtest_main
-[ 30%] Building CXX object lib/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-[ 40%] Linking CXX static library ../libgtest_main.a
-[ 40%] Built target gtest_main
-Scanning dependencies of target homework_2
-[ 50%] Building CXX object CMakeFiles/homework_2.dir/homework_2.cpp.o
+Running main() from /home/carson/Projects/msu/csci-366-spring2021/grading/scripts/repos/mason_medina/homework_2/lib/googletest/src/gtest_main.cc
+[==========] Running 2 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from print_binary_representation
+[ RUN      ] print_binary_representation.works
+[       OK ] print_binary_representation.works (0 ms)
+[----------] 1 test from print_binary_representation (0 ms total)
+
+[----------] 1 test from set_my_age
+[ RUN      ] set_my_age.works
+[       OK ] set_my_age.works (0 ms)
+[----------] 1 test from set_my_age (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 2 tests from 2 test suites ran. (0 ms total)
+[  PASSED  ] 2 tests.
