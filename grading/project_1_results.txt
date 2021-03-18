@@ -1,7 +1,5 @@
-[ 26%] Built target battleBit_lib
-[ 53%] Built target battleBit
-[ 61%] Built target gtest
-[ 69%] Built target gtest_main
-[ 84%] Built target battleBit_tests
-[ 92%] Built target gmock
-[100%] Built target gmock_main
+Scanning dependencies of target battleBit_lib
+[  3%] Building C object CMakeFiles/battleBit_lib.dir/src/main.c.o
+[  7%] Building C object CMakeFiles/battleBit_lib.dir/src/server.c.o
+[ 11%] Building C object CMakeFiles/battleBit_lib.dir/src/repl.c.o
+[ 15%] Building C object CMakeFiles/battleBit_lib.dir/src/game.c.o
