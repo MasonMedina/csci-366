@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(battleship C)
-
+enable_language(ASM_NASM)
 set(CMAKE_ASM_NASM_LINK_EXECUTABLE "ld <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
 set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
 

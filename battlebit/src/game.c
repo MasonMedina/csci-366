@@ -2,13 +2,12 @@
 // Created by carson on 5/20/20.
 //
 
-#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "game.h"
+#include <string.h>
 
-
-// STEP 10 - Synchronization: the GAME structure will be accessed by both players interacting
+// STEP 9 - Synchronization: the GAME structure will be accessed by both players interacting
 // asynchronously with the server.  Therefore the data must be protected to avoid race conditions.
 // Add the appropriate synchronization needed to ensure a clean battle.
 
@@ -43,7 +42,6 @@ int game_fire(game *game, int player, int x, int y) {
     //  PLAYER_1_WINS or PLAYER_2_WINS depending on who won.
 }
 
-
 // Step 1 - implement this function.  We are taking an x, y position
 // and using bitwise operators, converting that to an unsigned long long
 // with a 1 in the position corresponding to that x, y
@@ -57,26 +55,20 @@ int game_fire(game *game, int player, int x, int y) {
 // value.
 unsigned long long int xy_to_bitval(int x, int y) {
 
-    unsigned long long int_grid = 1ull;
-
+    unsigned long long int_64 = 1ull;
     if (x < 8 && x >= 0 && y < 8 && y >= 0) {
         unsigned int move = x + 8 * y;
-        int_grid = (int_grid << move);
+        int_64 = (int_64 << move);
     }
-
     else {
-        int_grid = 0;
+        int_64 = 0;
     }
-
-    return int_grid;
+    return int_64;
 }
 
 struct game * game_get_current() {
     return GAME;
 }
-
-
-
 // Step 2 - implement this function.  Here you are taking a C
 // string that represents a layout of ships, then testing
 // to see if it is a valid layout (no off-the-board positions
@@ -88,13 +80,19 @@ struct game * game_get_current() {
 //
 // if it is invalid, you should return -1
 int game_load_board(struct game *game, int player, char * spec) {
+
     int carrier = 5;
     int battleship = 4;
     int destroyer = 3;
     int submarine = 3;
     int patrolBoat = 2;
 
-    int carrier_used, battleship_used, destroyer_used, submarine_used, patrolBoat_used = 0;
+    int carrier_used = 0;
+    int battleship_used = 0;
+    int destroyer_used = 0;
+    int submarine_used = 0;
+    int patrolBoat_used = 0;
+
     int return_value = -1;
 
     if (spec == NULL) {
@@ -162,11 +160,11 @@ int game_load_board(struct game *game, int player, char * spec) {
     }
     return return_value;
 }
-
 // implement this as part of Step 2
 // returns 1 if the ship can be added, -1 if not
 // hint: this can be defined recursively
 int add_ship_horizontal(player_info *player, int x, int y, int length) {
+
     if (length <= 0) {
         return 1;
     }
@@ -184,11 +182,11 @@ int add_ship_horizontal(player_info *player, int x, int y, int length) {
     length--;
     add_ship_horizontal(player, x, y, length);
 }
-
 // implement this as part of Step 2
 // returns 1 if the ship can be added, -1 if not
 // hint: this can be defined recursively
 int add_ship_vertical(player_info *player, int x, int y, int length) {
+
     if (length <= 0) {
         return 1;
     }
