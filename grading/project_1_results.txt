@@ -1,5 +1,1 @@
-Scanning dependencies of target battleBit_lib
-[  3%] Building C object CMakeFiles/battleBit_lib.dir/src/main.c.o
-[  7%] Building C object CMakeFiles/battleBit_lib.dir/src/server.c.o
-[ 11%] Building C object CMakeFiles/battleBit_lib.dir/src/repl.c.o
-[ 15%] Building C object CMakeFiles/battleBit_lib.dir/src/game.c.o
+[  3%] Building C object CMakeFiles/battleBit_lib.dir/src/game.c.o
