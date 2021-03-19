@@ -75,7 +75,7 @@ struct game * game_get_current() {
     return GAME;
 }
 
-}
+
 
 // Step 2 - implement this function.  Here you are taking a C
 // string that represents a layout of ships, then testing
@@ -94,63 +94,78 @@ int game_load_board(struct game *game, int player, char * spec) {
     int submarine = 3;
     int patrolBoat = 2;
 
-    int carrier_used, battleship_used, destroyer_used, destroyer_used, submarine_used, patrolBoat_used = 0;
-    int length = strlen(spec);
+    int carrier_used, battleship_used, destroyer_used, submarine_used, patrolBoat_used = 0;
     int return_value = -1;
 
-    if (spec == NULL || length != 15) {
+    if (spec == NULL) {
+        return return_value;
+    }
+
+    int length = strlen(spec);
+
+    if (length != 15) {
         return return_value;
     }
 
     for (int i = 0; i < length; i += 3) {
         char ship_type = spec[i];
-        int x = (int)spec[i + 1];
-        int y = (int)spec[i + 2];
+        int x = spec[i + 1] - '0';
+        int y = spec[i + 2] - '0';
 
-        if (ship_type == 'C' && carrier_used == 0) {
+        if (ship_type == 'C' && carrier_used == 0 && x < 4) {
             carrier_used = 1;
             return_value = add_ship_horizontal(&game->players[player], x, y, carrier);
         }
-        else if (ship_type == 'c' && carrier_used == 0) {
+        else if (ship_type == 'c' && carrier_used == 0 && y < 4) {
             carrier_used = 1;
             return_value = add_ship_vertical(&game->players[player], x, y, carrier);
         }
-        else if (ship_type == 'B' && battleship_used == 0) {
+        else if (ship_type == 'B' && battleship_used == 0 && x < 5) {
             battleship_used = 1;
             return_value = add_ship_horizontal(&game->players[player], x, y, battleship);
         }
-        else if (ship_type == 'b' && battleship_used == 0) {
+        else if (ship_type == 'b' && battleship_used == 0 && y < 5) {
             battleship_used = 1;
             return_value = add_ship_vertical(&game->players[player], x, y, battleship);
         }
-        else if (ship_type == 'D' && destroyer_used == 0) {
+        else if (ship_type == 'D' && destroyer_used == 0 && x < 6) {
             destroyer_used = 1;
             return_value = add_ship_horizontal(&game->players[player], x, y, destroyer);
         }
-        else if (ship_type == 'd' && destroyer_used == 0) {
+        else if (ship_type == 'd' && destroyer_used == 0 && y < 6) {
             destroyer_used = 1;
             return_value = add_ship_vertical(&game->players[player], x, y, destroyer);
         }
-        else if (ship_type == 'S' && submarine_used == 0) {
+        else if (ship_type == 'S' && submarine_used == 0 && x < 6) {
             submarine_used = 1;
             return_value = add_ship_horizontal(&game->players[player], x, y, submarine);
         }
-        else if (ship_type == 's' && submarine_used == 0) {
+        else if (ship_type == 's' && submarine_used == 0 && x < 6) {
             submarine_used = 1;
             return_value = add_ship_vertical(&game->players[player], x, y, submarine);
         }
-        else if (ship_type == 'P' && patrolBoat_used == 0) {
+        else if (ship_type == 'P' && patrolBoat_used == 0 && x < 7) {
             patrolBoat_used = 1;
             return_value = add_ship_horizontal(&game->players[player], x, y, patrolBoat);
         }
-        else if (ship_type == 'p' && patrolBoat_used == 0) {
+        else if (ship_type == 'p' && patrolBoat_used == 0 && y < 7) {
             patrolBoat_used = 1;
             return_value = add_ship_vertical(&game->players[player], x, y, patrolBoat);
+        }
+        else {
+            return_value = -1;
+        }
+
+        if (return_value == -1) {
+            return return_value;
         }
     }
     return return_value;
 }
 
+// implement this as part of Step 2
+// returns 1 if the ship can be added, -1 if not
+// hint: this can be defined recursively
 int add_ship_horizontal(player_info *player, int x, int y, int length) {
     if (length <= 0) {
         return 1;
@@ -170,6 +185,9 @@ int add_ship_horizontal(player_info *player, int x, int y, int length) {
     add_ship_horizontal(player, x, y, length);
 }
 
+// implement this as part of Step 2
+// returns 1 if the ship can be added, -1 if not
+// hint: this can be defined recursively
 int add_ship_vertical(player_info *player, int x, int y, int length) {
     if (length <= 0) {
         return 1;
