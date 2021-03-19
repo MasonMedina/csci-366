@@ -55,15 +55,15 @@ int game_fire(game *game, int player, int x, int y) {
 // value.
 unsigned long long int xy_to_bitval(int x, int y) {
 
-    unsigned long long int_64 = 1ull;
+    unsigned long long int_grid = 1ull;
     if (x < 8 && x >= 0 && y < 8 && y >= 0) {
         unsigned int move = x + 8 * y;
-        int_64 = (int_64 << move);
+        int_grid = (int_grid << move);
     }
     else {
-        int_64 = 0;
+        int_grid = 0;
     }
-    return int_64;
+    return int_grid;
 }
 
 struct game * game_get_current() {
