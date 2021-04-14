@@ -100,18 +100,58 @@ void repl_print_board(game *game, int player, char_buff * buffer) {
     cb_append(buffer, ".........battleBit\n\n");
 }
 
+// Step 3 - Implement this to print out the visual ships representation
+//  for the console.  You will need to use bit masking for each position
+//  to determine if a ship is at the position or not.  If it is present
+//  you need to print an X.  If not, you need to print a space character ' '
+
 void repl_print_ships(player_info *player_info, char_buff *buffer) {
-    // Step 3 - Implement this to print out the visual ships representation
-    //  for the console.  You will need to use bit masking for each position
-    //  to determine if a ship is at the position or not.  If it is present
-    //  you need to print an X.  If not, you need to print a space character ' '
+
+    unsigned long long mask;
+    cb_append(buffer, "  0 1 2 3 4 5 6 7 \n");
+    for (int row = 0; row < BOARD_DIMENSION; row++) {
+        cb_append_int(buffer, row);
+        cb_append(buffer, " ");
+        for (int column = 0; column < BOARD_DIMENSION; column++) {
+            mask = xy_to_bitval(column, row);
+            if(player_info->ships & mask){
+                cb_append(buffer, "*");
+            } else{
+                cb_append(buffer, " ");
+            }
+            cb_append(buffer, " ");
+        }
+        cb_append(buffer, "\n");
+    }
 }
 
+// Step 4 - Implement this to print out a visual representation of the shots
+// that the player has taken and if they are a hit or not.  You will again need
+// to use bit-masking, but this time you will need to consult two values: both
+// hits and shots values in the players game struct.  If a shot was fired at
+// a given spot and it was a hit, print 'H', if it was a miss, print 'M'.  If
+// no shot was taken at a position, print a space character ' '
 void repl_print_hits(struct player_info *player_info, struct char_buff *buffer) {
-    // Step 4 - Implement this to print out a visual representation of the shots
-    // that the player has taken and if they are a hit or not.  You will again need
-    // to use bit-masking, but this time you will need to consult two values: both
-    // hits and shots values in the players game struct.  If a shot was fired at
-    // a given spot and it was a hit, print 'H', if it was a miss, print 'M'.  If
-    // no shot was taken at a position, print a space character ' '
+
+    cb_append(buffer, "  0 1 2 3 4 5 6 7 \n");
+    unsigned long long mask = 1ull;
+    for (int row = 0; row < BOARD_DIMENSION; row++) {
+        cb_append_int(buffer, row);
+        cb_append(buffer, " ");
+        for (int column = 0; column< BOARD_DIMENSION; column++) {
+            if(player_info->hits & mask  ) {
+                cb_append(buffer, "H");
+            }
+            else if(player_info->shots & mask ){
+
+                cb_append(buffer, "M");
+            }
+            else{
+                cb_append(buffer, " ");
+            }
+            cb_append(buffer, " ");
+            mask = mask << 1ull;
+        }
+        cb_append(buffer, "\n");
+    }
 }
