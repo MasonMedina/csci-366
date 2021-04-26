@@ -41,42 +41,46 @@ void game_init_player_info(player_info *player_info) {
 //  If the opponents ships value is 0, they have no remaining ships, and you should set the game state to
 //  PLAYER_1_WINS or PLAYER_2_WINS depending on who won.
 int game_fire(game *game, int player, int x, int y) {
-    unsigned long long int mask = xy_to_bitval(x, y);
-    int opponent = (player + 1) % 2;
-    game->players[player].shots = game->players->shots | mask;
+    game = game_get_current();
+    player_info *shooter_info = &game->players[player];
+    int other_player = 1 - player;
+    player_info *shootee_info = &game->players[other_player];
 
-    if (game->players[opponent].ships & mask) {
-        game->players[player].hits = game->players[player].hits | mask;
-        game->players[opponent].ships = game->players[opponent].ships ^= mask;
+    unsigned long long int bitmask = xy_to_bitval(x ,y);
+
+    if (shooter_info->shots ^ bitmask) {
+        shooter_info->shots += bitmask;
     }
 
-    else{
+    if (shooter_info->shots & shootee_info->ships) {
+        shootee_info->ships = (shootee_info->ships ^ bitmask);
+        shooter_info->hits += bitmask;
+        if (shootee_info->ships == 0) {
+            if (player == 0) {
+                game->status = PLAYER_0_WINS;
+            }
+            else {
+                game->status = PLAYER_1_WINS;
+            }
+        }
+        else {
+            if (player == 0) {
+                game->status = PLAYER_1_TURN;
+            } else {
+                game->status = PLAYER_0_TURN;
+            }
+        }
+        return 1;
+    }
+    else {
+        if (player == 0) {
+            game->status = PLAYER_1_TURN;
+        }
+        else {
+            game->status = PLAYER_0_TURN;
+        }
         return 0;
     }
-
-    if (game->players[opponent].ships == 0) {
-        if(player == 1){
-            GAME->status = PLAYER_1_WINS;
-        }
-
-        if(player == 0){
-            GAME->status = PLAYER_0_WINS;
-        }
-
-    } else{
-        if(player == 1){
-            GAME->status = PLAYER_0_TURN;
-
-        }
-        if(player == 0){
-            GAME->status = PLAYER_1_TURN;
-        }
-
-        return 1;
-
-    }
-
-    return 1;
 }
 
 // Step 1 - implement this function.  We are taking an x, y position

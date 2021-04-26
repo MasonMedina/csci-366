@@ -49,6 +49,7 @@ void repl_execute_command(struct char_buff * buffer) {
             printf("say <string> - Send the string to all players as part of a chat\n");
             printf("reset - reset the game\n");
             printf("server - start the server\n");
+            printf("shortcut - make player 1 have only one ship at 0 0\n");
             printf("exit - quit the server\n");
         } else if(strcmp(command, "server") == 0) {
             server_start();
@@ -83,6 +84,10 @@ void repl_execute_command(struct char_buff * buffer) {
                     printf("  Miss");
                 }
             }
+        } else if (strcmp(command, "shortcut") == 0) {
+
+            game_get_current()->players[1].ships = 1;
+            game_get_current()->players[0].shots -= 1;
         } else {
             printf("Unknown Command: %s\n", command);
         }
@@ -100,58 +105,53 @@ void repl_print_board(game *game, int player, char_buff * buffer) {
     cb_append(buffer, ".........battleBit\n\n");
 }
 
-// Step 3 - Implement this to print out the visual ships representation
-//  for the console.  You will need to use bit masking for each position
-//  to determine if a ship is at the position or not.  If it is present
-//  you need to print an X.  If not, you need to print a space character ' '
-
 void repl_print_ships(player_info *player_info, char_buff *buffer) {
-
-    unsigned long long mask;
+    // Step 3 - Implement this to print out the visual ships representation
+    //  for the console.  You will need to use bit masking for each position
+    //  to determine if a ship is at the position or not.  If it is present
+    //  you need to print an X.  If not, you need to print a space character ' '
     cb_append(buffer, "  0 1 2 3 4 5 6 7 \n");
-    for (int row = 0; row < BOARD_DIMENSION; row++) {
-        cb_append_int(buffer, row);
-        cb_append(buffer, " ");
-        for (int column = 0; column < BOARD_DIMENSION; column++) {
-            mask = xy_to_bitval(column, row);
-            if(player_info->ships & mask){
-                cb_append(buffer, "*");
-            } else{
-                cb_append(buffer, " ");
+
+    for (int y = 0; y < 8; y++) {
+        cb_append_int(buffer, y);
+        for (int x = 0; x < 8; x++) {
+            unsigned long long int bitmask = xy_to_bitval(x,y);
+            if (player_info->ships & bitmask) {
+                cb_append(buffer, " *");
             }
-            cb_append(buffer, " ");
+            else {
+                cb_append(buffer, "  ");
+            }
         }
-        cb_append(buffer, "\n");
+        cb_append(buffer, " \n");
     }
 }
 
-// Step 4 - Implement this to print out a visual representation of the shots
-// that the player has taken and if they are a hit or not.  You will again need
-// to use bit-masking, but this time you will need to consult two values: both
-// hits and shots values in the players game struct.  If a shot was fired at
-// a given spot and it was a hit, print 'H', if it was a miss, print 'M'.  If
-// no shot was taken at a position, print a space character ' '
 void repl_print_hits(struct player_info *player_info, struct char_buff *buffer) {
-
+    // Step 4 - Implement this to print out a visual representation of the shots
+    // that the player has taken and if they are a hit or not.  You will again need
+    // to use bit-masking, but this time you will need to consult two values: both
+    // hits and shots values in the players game struct.  If a shot was fired at
+    // a given spot and it was a hit, print 'H', if it was a miss, print 'M'.  If
+    // no shot was taken at a position, print a space character ' '
     cb_append(buffer, "  0 1 2 3 4 5 6 7 \n");
-    unsigned long long mask = 1ull;
-    for (int row = 0; row < BOARD_DIMENSION; row++) {
-        cb_append_int(buffer, row);
-        cb_append(buffer, " ");
-        for (int column = 0; column< BOARD_DIMENSION; column++) {
-            if(player_info->hits & mask  ) {
-                cb_append(buffer, "H");
-            }
-            else if(player_info->shots & mask ){
 
-                cb_append(buffer, "M");
+    for (int y = 0; y < 8; y++) {
+        cb_append_int(buffer, y);
+        for (int x = 0; x < 8; x++) {
+            unsigned long long int bitmask = xy_to_bitval(x,y);
+            if (player_info->shots & bitmask) {
+                if (player_info->hits & bitmask) {
+                    cb_append(buffer, " H");
+                }
+                else {
+                    cb_append(buffer, " M");
+                }
             }
-            else{
-                cb_append(buffer, " ");
+            else {
+                cb_append(buffer, "  ");
             }
-            cb_append(buffer, " ");
-            mask = mask << 1ull;
         }
-        cb_append(buffer, "\n");
+        cb_append(buffer, " \n");
     }
 }
